@@ -19,7 +19,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
 @Slf4j
 @RestControllerAdvice
@@ -28,6 +27,7 @@ public class TransferExceptionHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler({UserNotFoundException.class, EmailNotFoundException.class, PhoneNotFoundException.class})
     public ResponseEntity<ErrorDto> handleNotFoundException(Exception ex) {
+
         log.error("not found ex: {}", ex.getMessage());
         return new ResponseEntity<>(ErrorDto.builder()
                 .message(ex.getMessage())
@@ -38,6 +38,7 @@ public class TransferExceptionHandler {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({UserUnauthorizedException.class})
     public ResponseEntity<ErrorDto> handleNoAuthorityException(UserUnauthorizedException ex) {
+
         log.error("unauthorized: {}", ex.getMessage());
         return new ResponseEntity<>(ErrorDto.builder()
                 .message("unauthorized")
@@ -47,7 +48,8 @@ public class TransferExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({WrongTransferTargetException.class, WrongFromAmountException.class, AlreadyExistException.class})
-    public ResponseEntity<ErrorDto> handleBadRequestException(Exception ex, WebRequest webRequest) {
+    public ResponseEntity<ErrorDto> handleBadRequestException(Exception ex) {
+
         log.error("bad request: {}", ex.getMessage());
         return new ResponseEntity<>(ErrorDto.builder()
                 .message("bad request: " + ex.getMessage())
@@ -60,7 +62,8 @@ public class TransferExceptionHandler {
             ConstraintViolationException.class, MethodArgumentNotValidException.class,
             HttpMessageNotReadableException.class, DataIntegrityViolationException.class
     })
-    public ResponseEntity<ErrorDto> handleWrongArgsException(Exception ex, WebRequest webRequest) {
+    public ResponseEntity<ErrorDto> handleWrongArgsException(Exception ex) {
+
         log.error("wrong args: {}", ex.getMessage());
         return new ResponseEntity<>(ErrorDto.builder()
                 .message("bad request")
@@ -71,7 +74,7 @@ public class TransferExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorDto> handleOtherException(Exception ex) {
-        ex.printStackTrace();
+
         log.error("some problem: {}", ex.getMessage());
         return new ResponseEntity<>(ErrorDto.builder()
                 .message(ex.getMessage())
