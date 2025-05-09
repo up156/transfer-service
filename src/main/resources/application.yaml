@@ -1,0 +1,28 @@
+spring:
+  redis:
+    enable: true
+    host: localhost
+    port: 6379
+  cache:
+    type: redis
+  datasource:
+    url: jdbc:postgresql://localhost:5432/transfer_db
+    username: postgres
+    password:
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+server:
+  port: 8080
+jwt:
+  secret:
+  expiration-ms: 600000
