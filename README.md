@@ -69,7 +69,7 @@ POST /api/v1/auth/email
 🔐 Аутентифицированный запрос:
 
 GET /api/v1/transfer/user/me  
-Authorization: Bearer <token>    
+Authorization: Bearer token   
   
 🛠 Структура базы  
 users (id, name, date_of_birth, password)  
